@@ -1,9 +1,10 @@
 import { ApiError, type ApplicantRunView, type FieldValue, type Step } from "@comfi/kyb-contracts";
 import { Alert, Badge, Button } from "@comfi/ui";
-import { useMutation } from "@tanstack/react-query";
+import { useIsMutating, useMutation } from "@tanstack/react-query";
 import { useRef, useState, type FormEvent } from "react";
 import { api, errorMessage } from "../api";
 import { FieldInput } from "../fields/FieldInput";
+import { uploadMutationKey } from "../fields/FileField";
 import { initialValues } from "../fields/values";
 import { ArrowLeftIcon, ArrowRightIcon } from "../icons";
 import { generateTestValues } from "../test-data";
@@ -25,6 +26,7 @@ export function StepForm({ token, entry, step, stepIndex, onBack, onSubmitted }:
   const [values, setValues] = useState(() => initialValues(step.fields, submittedValues(application, step.id)));
   const [errors, setErrors] = useState<Record<string, string>>({});
   const submit = useSubmitStep(token);
+  const uploading = useIsMutating({ mutationKey: uploadMutationKey(token) }) > 0;
   const fill = useMutation({
     mutationFn: () => generateTestValues(step.fields, (file) => api.applicant.upload(token, file)),
     onSuccess: (generated) => {
@@ -50,6 +52,7 @@ export function StepForm({ token, entry, step, stepIndex, onBack, onSubmitted }:
   // mutateAsync rather than mutate callbacks: the submit may swap this screen for another one.
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (uploading) return;
     try {
       onSubmitted(await submit.mutateAsync({ applicationId: application.id, stepId: step.id, values }));
     } catch (error) {
@@ -110,14 +113,14 @@ export function StepForm({ token, entry, step, stepIndex, onBack, onSubmitted }:
 
       <footer className="ob-step__footer">
         {onBack ? (
-          <Button variant="ghost" onClick={onBack} disabled={submit.isPending}>
+          <Button variant="ghost" onClick={onBack} disabled={submit.isPending || uploading}>
             <ArrowLeftIcon />
             Back
           </Button>
         ) : (
           <span />
         )}
-        <Button type="submit" variant="primary" className="ob-step__submit" disabled={submit.isPending || fill.isPending}>
+        <Button type="submit" variant="primary" className="ob-step__submit" disabled={submit.isPending || fill.isPending || uploading}>
           {submit.isPending ? "Saving…" : submitLabel}
           {!submitsApplication && !submit.isPending && <ArrowRightIcon />}
         </Button>

@@ -53,6 +53,10 @@ export function validateFlow(definition: FlowDefinition): PublishIssue[] {
           add("duplicate_field_key", `Field key "${field.key}" is used more than once`, "field", field.id);
         }
         seenKeys.add(field.key);
+        const optionValues = field.options?.map((option) => option.value) ?? [];
+        if (new Set(optionValues).size !== optionValues.length) {
+          add("duplicate_option_value", `Select "${field.label}" has options with the same value`, "field", field.id);
+        }
         if (field.type === "select" && !field.options?.length) {
           add("select_without_options", `Select "${field.label}" needs at least one option`, "field", field.id);
         }

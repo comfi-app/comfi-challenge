@@ -87,7 +87,9 @@ function* pdfTextStrings(pdf: string): Generator<string> {
 }
 
 function isCalendarDate(value: string): boolean {
-  return ISO_DATE.test(value) && new Date(`${value}T00:00:00Z`).toISOString().startsWith(value);
+  if (!ISO_DATE.test(value)) return false;
+  const date = new Date(`${value}T00:00:00Z`);
+  return !Number.isNaN(date.getTime()) && date.toISOString().startsWith(value);
 }
 
 export function normalizeLicenceNumber(value: string): string {

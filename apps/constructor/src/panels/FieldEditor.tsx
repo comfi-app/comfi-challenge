@@ -1,9 +1,8 @@
-import { Field, fieldTypes, type FieldOption, type FieldType, type Step } from "@comfi/kyb-contracts";
+import { Field, fieldTypes, type FieldOption, type FieldType } from "@comfi/kyb-contracts";
 import { Button, Checkbox, FormField, IconButton, Input } from "@comfi/ui";
 import { Icon } from "../icons";
 import { documentMimeTypes } from "../model/factories";
 import type { FieldPatch } from "../model/flow-reducer";
-import { suggestFieldKey } from "../model/naming";
 import { ChoiceSelect, TextField, type Choice } from "./controls";
 
 export const fieldTypeLabels: Record<FieldType, string> = {
@@ -28,16 +27,15 @@ function keyError(field: Field, otherKeys: ReadonlySet<string>): string | null {
 
 interface FieldEditorProps {
   field: Field;
-  step: Step;
   /** Keys of every other field in the flow; keys must be unique. */
   otherKeys: ReadonlySet<string>;
   onChange: (patch: FieldPatch) => void;
 }
 
-export function FieldEditor({ field, step, otherKeys, onChange }: FieldEditorProps) {
-  // The key follows the label until someone edits it by hand.
-  const keyFollowsLabel = field.key === suggestFieldKey(step.name, field.label);
-  const changeLabel = (label: string) => onChange(keyFollowsLabel ? { label, key: suggestFieldKey(step.name, label) } : { label });
+export function FieldEditor({ field, otherKeys, onChange }: FieldEditorProps) {
+  // Keys are only suggested when a field is created: renaming a label must not silently
+  // change the attribute that conditions and stored answers refer to.
+  const changeLabel = (label: string) => onChange({ label });
   const keyProblem = keyError(field, otherKeys);
 
   return (
@@ -76,7 +74,9 @@ function OptionsEditor({ options, onChange }: { options: readonly FieldOption[];
   const replace = (index: number, patch: Partial<FieldOption>) =>
     onChange(options.map((option, i) => (i === index ? { ...option, ...patch } : option)));
   const add = () => {
-    const number = options.length + 1;
+    const taken = new Set(options.map((option) => option.value));
+    let number = options.length + 1;
+    while (taken.has(`option_${number}`)) number++;
     onChange([...options, { value: `option_${number}`, label: `Option ${number}` }]);
   };
 

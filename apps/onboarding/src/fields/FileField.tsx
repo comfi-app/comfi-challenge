@@ -9,6 +9,9 @@ import { acceptLabel } from "./values";
 
 type UploadSource = File | SampleDocument;
 
+/** Shared with the step form so it can hold submission while an upload is in flight. */
+export const uploadMutationKey = (token: string) => ["upload", token] as const;
+
 class FileTypeError extends Error {}
 
 const sourceName = (source: UploadSource) => (source instanceof File ? source.name : source.fileName);
@@ -27,6 +30,7 @@ export function FileField({ id, field, value, invalid, token, onChange }: FileFi
   const inputRef = useRef<HTMLInputElement>(null);
   const [dragging, setDragging] = useState(false);
   const upload = useMutation({
+    mutationKey: uploadMutationKey(token),
     mutationFn: async (source: UploadSource) => {
       const file = source instanceof File ? source : await loadSample(source);
       if (field.accept?.length && !field.accept.includes(file.type)) {

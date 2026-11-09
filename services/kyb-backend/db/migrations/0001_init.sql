@@ -43,6 +43,7 @@ create table flow_runs (
 );
 
 create index flow_runs_company_idx on flow_runs (company_id, created_at desc);
+create unique index flow_runs_one_active_per_company on flow_runs (company_id) where status = 'active';
 create index flow_runs_flow_idx on flow_runs (flow_id);
 create index flow_runs_flow_version_idx on flow_runs (flow_version_id);
 

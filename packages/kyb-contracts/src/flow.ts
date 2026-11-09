@@ -7,7 +7,7 @@ export const fieldTypes = ["text", "email", "phone", "date", "number", "select",
 export const FieldType = z.enum(fieldTypes);
 export type FieldType = z.infer<typeof FieldType>;
 
-export const FieldOption = z.object({ value: z.string().min(1), label: z.string().min(1) });
+export const FieldOption = z.object({ value: z.string().trim().min(1), label: z.string().trim().min(1) });
 export type FieldOption = z.infer<typeof FieldOption>;
 
 export const Field = z.object({

@@ -37,9 +37,9 @@ export class ChecksService implements OnApplicationShutdown {
       createdAt: new Date().toISOString(),
       completedAt: null,
     };
+    const extracted = readTradeLicence(request.file.buffer);
     this.checks.set(check.id, check);
 
-    const extracted = readTradeLicence(request.file.buffer);
     const { minDelayMs, maxDelayMs } = this.config;
     const delay = minDelayMs + Math.floor(Math.random() * (maxDelayMs - minDelayMs + 1));
     const timer = setTimeout(() => {

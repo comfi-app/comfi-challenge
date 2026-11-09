@@ -142,6 +142,12 @@ export class EngineService {
     await this.setAttributes(tx, run.companyId, values);
     for (const field of step.fields) {
       const value = values[field.key];
+      const fileId = value && typeof value === "object" ? value.fileId : null;
+      await tx.query(
+        `update files set application_id = null, field_key = null
+         where application_id = $1 and field_key = $2 and id is distinct from $3`,
+        [application.id, field.key, fileId],
+      );
       if (value && typeof value === "object") {
         await tx.query("update files set application_id = $2, field_key = $3 where id = $1", [
           value.fileId,

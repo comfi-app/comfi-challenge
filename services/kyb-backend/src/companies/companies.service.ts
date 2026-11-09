@@ -91,14 +91,10 @@ export class CompaniesService {
 
   async startRun(companyId: string, flowId: string): Promise<RunSummary> {
     const runId = await this.db.transaction(async (tx) => {
-      const { rows } = await tx.query<{ active_runs: number }>(
-        `select (select count(*)::int from flow_runs where company_id = c.id and status = 'active') as active_runs
-         from companies c where c.id = $1 for update`,
-        [companyId],
-      );
-      const company = rows[0];
-      if (!company) throw new NotFoundException("Company not found");
-      if (company.active_runs > 0) throw new ConflictException("Company already has an active run");
+      const locked = await tx.query("select 1 from companies where id = $1 for update", [companyId]);
+      if (locked.rowCount === 0) throw new NotFoundException("Company not found");
+      const active = await tx.query("select 1 from flow_runs where company_id = $1 and status = 'active'", [companyId]);
+      if ((active.rowCount ?? 0) > 0) throw new ConflictException("Company already has an active run");
       return this.engine.startRun(tx, companyId, flowId);
     });
     return (await this.runs.get(runId))!;

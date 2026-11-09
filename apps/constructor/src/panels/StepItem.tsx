@@ -133,7 +133,7 @@ function FieldItem({ field, step, index, isOpen, onToggle, otherKeys, onMove, on
       </div>
       {isOpen && (
         <div className="fc-item__body">
-          <FieldEditor field={field} step={step} otherKeys={otherKeys} onChange={onChange} />
+          <FieldEditor field={field} otherKeys={otherKeys} onChange={onChange} />
         </div>
       )}
     </li>

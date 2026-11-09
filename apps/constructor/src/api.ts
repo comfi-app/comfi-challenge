@@ -33,7 +33,5 @@ export function useFlowVersionQuery(flowId: string, version: number | null) {
   return useQuery({
     queryKey: flowKeys.version(flowId, version),
     queryFn: version === null ? skipToken : () => api.flows.version(flowId, version),
-    // Published versions never change.
-    staleTime: Infinity,
   });
 }
