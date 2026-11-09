@@ -24,7 +24,7 @@ export const businessOnboardingV2: FlowDefinition = {
       isEntry: true,
       advanceGate: "manual",
       rejectEndingId: "ending-rejected",
-      position: { x: 80, y: 120 },
+      position: { x: 0, y: 160 },
       actions: [{ type: "notify", template: "application_in_review", recipient: "operations" }],
       steps: [
         {
@@ -166,7 +166,7 @@ export const businessOnboardingV2: FlowDefinition = {
       isEntry: false,
       advanceGate: "manual",
       rejectEndingId: "ending-rejected",
-      position: { x: 400, y: 320 },
+      position: { x: 420, y: -160 },
       actions: [{ type: "notify", template: "application_in_review", recipient: "operations" }],
       steps: [
         {
@@ -230,7 +230,7 @@ export const businessOnboardingV2: FlowDefinition = {
       outcome: "approved",
       title: "Your business is verified",
       body: "Thanks for completing onboarding. Your Comfi account is ready to use.",
-      position: { x: 720, y: 120 },
+      position: { x: 860, y: 180 },
       actions: [
         { type: "set_attribute", attribute: "kyb.status", value: "verified" },
         { type: "notify", template: "kyb_approved", recipient: "applicant" },
@@ -242,7 +242,7 @@ export const businessOnboardingV2: FlowDefinition = {
       outcome: "rejected",
       title: "We couldn't verify your business",
       body: "Unfortunately we can't open an account for your business right now. Our team will email you the details.",
-      position: { x: 720, y: 320 },
+      position: { x: 860, y: 480 },
       actions: [
         { type: "set_attribute", attribute: "kyb.status", value: "rejected" },
         { type: "notify", template: "kyb_rejected", recipient: "applicant" },
