@@ -1,0 +1,15 @@
+{
+  "name": "comfi-challenge",
+  "private": true,
+  "packageManager": "pnpm@10.9.0",
+  "engines": { "node": ">=22.12.0" },
+  "scripts": {
+    "dev": "docker compose up -d --wait && pnpm --filter \"./apps/shell\" --filter \"./apps/onboarding\" --filter \"./services/*\" --parallel run dev",
+    "db:reset": "docker compose up -d --wait && pnpm --filter @comfi/kyb-backend run db:reset",
+    "typecheck": "pnpm -r --parallel run typecheck",
+    "test": "pnpm -r run test"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}
