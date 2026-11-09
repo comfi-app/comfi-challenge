@@ -183,3 +183,62 @@ code, .cf-mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; fo
 .cf-stack { display: flex; flex-direction: column; gap: 12px; }
 .cf-row { display: flex; align-items: center; gap: 8px; }
 .cf-muted { color: var(--cf-text-muted); }
+
+/* Timeline */
+.cf-timeline { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.cf-timeline__item { position: relative; padding: 0 0 18px 22px; }
+.cf-timeline__item:last-child { padding-bottom: 0; }
+.cf-timeline__item::before { content: ""; position: absolute; left: 4px; top: 14px; bottom: -2px; width: 1px; background: var(--cf-border); }
+.cf-timeline__item:last-child::before { display: none; }
+.cf-timeline__dot { position: absolute; left: 0; top: 5px; width: 9px; height: 9px; border-radius: 50%; background: var(--cf-neutral-300); box-shadow: 0 0 0 3px var(--cf-surface); }
+.cf-timeline__item[data-tone="info"] .cf-timeline__dot { background: var(--cf-blue-700); }
+.cf-timeline__item[data-tone="success"] .cf-timeline__dot { background: var(--cf-primary-600); }
+.cf-timeline__item[data-tone="warning"] .cf-timeline__dot { background: var(--cf-amber-600); }
+.cf-timeline__item[data-tone="danger"] .cf-timeline__dot { background: var(--cf-red-600); }
+.cf-timeline__item[data-tone="accent"] .cf-timeline__dot { background: var(--cf-primary-800); }
+.cf-timeline__title { font-weight: 500; font-size: 13px; }
+.cf-timeline__detail { font-size: 13px; color: var(--cf-neutral-700); word-break: break-word; }
+.cf-timeline__comment { margin: 6px 0 2px; padding: 6px 10px; border-left: 2px solid var(--cf-primary-300); background: var(--cf-neutral-50); border-radius: 0 var(--cf-radius-md) var(--cf-radius-md) 0; font-size: 13px; white-space: pre-wrap; }
+.cf-timeline__meta { font-size: 12px; color: var(--cf-text-muted); margin-top: 2px; }
+.cf-timeline-empty { margin: 0; }
+
+/* Copyable link */
+.cf-copy-link { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.cf-copy-link__url { display: block; padding: 6px 8px; background: var(--cf-neutral-50); border: 1px solid var(--cf-border); border-radius: var(--cf-radius-md); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--cf-neutral-700); }
+a.cf-btn:hover { text-decoration: none; }
+
+/* File link */
+.cf-file-link { display: inline-flex; align-items: center; gap: 8px; max-width: 100%; min-width: 0; }
+.cf-file-link__ext { flex: none; font-size: 10px; font-weight: 600; letter-spacing: 0.02em; padding: 2px 5px; border-radius: var(--cf-radius-sm); background: var(--cf-primary-200); color: var(--cf-primary-800); }
+.cf-file-link__name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; }
+.cf-file-link__size { flex: none; color: var(--cf-text-muted); font-size: 12px; }
+.cf-file-link:hover { text-decoration: none; }
+.cf-file-link:hover .cf-file-link__name { text-decoration: underline; }
+
+/* Detail pages */
+.cf-page-header { flex-wrap: wrap; }
+.cf-page-header > div:first-child { min-width: 0; }
+.cf-page-header__actions { flex-wrap: wrap; }
+.cf-tab:focus-visible { outline: none; box-shadow: var(--cf-ring); }
+.cf-breadcrumb { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--cf-text-muted); margin-bottom: -8px; min-width: 0; }
+.cf-breadcrumb a { color: var(--cf-text-muted); font-weight: 500; }
+.cf-breadcrumb a:hover { color: var(--cf-text); }
+.cf-breadcrumb [aria-current="page"] { color: var(--cf-neutral-700); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cf-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; color: var(--cf-text-muted); font-size: 13px; }
+.cf-detail-grid { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 20px; align-items: start; }
+.cf-detail-grid__main, .cf-detail-grid__side { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.cf-card__body--flush { padding: 0; }
+.cf-dl--compact { grid-template-columns: 112px minmax(0, 1fr); gap: 8px 12px; }
+.cf-dl dd { min-width: 0; }
+.cf-subhead { font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--cf-text-muted); }
+
+@media (max-width: 1100px) {
+  .cf-detail-grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 760px) {
+  .cf-page { padding: 20px 16px 40px; }
+}
+@media (max-width: 560px) {
+  .cf-dl { grid-template-columns: minmax(0, 1fr); gap: 2px 0; }
+  .cf-dl dd { margin-bottom: 8px; }
+}

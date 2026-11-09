@@ -1,0 +1,32 @@
+{
+  "name": "@comfi/constructor",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.tsx",
+  "types": "./src/index.tsx",
+  "exports": {
+    ".": "./src/index.tsx"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@comfi/kyb-contracts": "workspace:*",
+    "@comfi/ui": "workspace:*",
+    "@tanstack/react-query": "5.90.5",
+    "@xyflow/react": "12.9.0",
+    "react-router": "7.9.4"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.2",
+    "react": "19.2.0",
+    "typescript": "^5.9.3",
+    "vite": "7.1.12",
+    "vitest": "3.2.7"
+  }
+}
