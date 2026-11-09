@@ -70,7 +70,7 @@ export type ConditionOperator = z.infer<typeof ConditionOperator>;
 export const Condition = z.object({
   attribute: z.string().min(1),
   operator: ConditionOperator,
-  value: z.union([z.string(), z.array(z.string())]).optional(),
+  value: z.union([z.string().trim(), z.array(z.string().trim())]).optional(),
 });
 export type Condition = z.infer<typeof Condition>;
 
